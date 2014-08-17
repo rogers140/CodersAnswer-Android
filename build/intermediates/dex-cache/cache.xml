@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/classes-7dda6c36baca120150a45fbefcab3b24da1077a8.jar"
+        jar="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/exploded-aar/com.android.support/support-v13/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="e128103d5281ddd26195a7f980b36d0d005a4e56"/>
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/classes-56a7d22bb36aee29208274e65819fc77791e1c8e.jar"
+        jar="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef"/>
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-bca9cd8c8082330ef7549e0398af852faae531fd.jar"
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-fe034da61bc080713a9bed55705ec798f6f1fe1d.jar"
+        jar="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/classes-26b2c13b20b353fdc17c542ff05011c4460f33ea.jar"
+        jar="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-57caa82992371cfd3bbd6bdac9e410e2f6f98382.jar"
+        jar="/Users/rogers/Documents/Android/CodersAnswer/app/build/intermediates/exploded-aar/com.android.support/support-v13/20.0.0/libs/internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="27bbd3982cdfe4468a9bf99c8c773734a9049e33"/>
+
+</pre-dex-items>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CodersAnswer</string>
+
+    <string name="all">问题列表</string>
+    <string name="random">试试手气</string>
+    <string name="search">搜索</string>
+    <string name="star">收藏</string>
+    <string name="about">关于</string>
+    <string name="feedback">反馈</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="problem_list_title">问题列表</string>
+    <string name="starred_list_title">收藏列表</string>
+
+    <string name="share_subject">碉堡了！</string>
+    <string name="share_text1">我正在使用CodersAnswer查看代码题目</string>
+    <string name="share_text2">！快去下载CodersAnswer吧: </string>
+    <string name="app_link">http://www.wandoujia.com/apps/com.rogers.codersanswer</string>
+
+    <string name="about_title">关于</string>
+    <string name="version">版本 1.2</string>
+    <string name="problem_from">问题来自</string>
+    <string name="problem_source_1">oj.leetcode.com</string>
+    <string name="answer_source">回答来自rogers140，wyvern92</string>
+    <string name="thank_you">多谢！</string>
+    <string name="appreciate">开发者感激你的帮助！</string>
+
+</resources>

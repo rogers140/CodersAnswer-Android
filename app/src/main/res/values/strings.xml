@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CodersAnswer</string>
+
+    <string name="all">Problem List</string>
+    <string name="random">Pick One</string>
+    <string name="search">Search</string>
+    <string name="star">Starred</string>
+    <string name="about">About</string>
+    <string name="feedback">Feedback</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="problem_list_title">Problem List</string>
+    <string name="starred_list_title">Starred List</string>
+
+    <string name="share_subject">Cool!</string>
+    <string name="share_text1">I\'m using CodersAnswer to deal with the Problem \"</string>
+    <string name="share_text2">\"! Go Check CodersAnswer via: </string>
+    <string name="app_link">https://play.google.com/store/apps/details?id=com.rogers.codersanswer</string>
+
+    <string name="about_title">About</string>
+    <string name="version">Version 1.3</string>
+    <string name="problem_from">Problem from:</string>
+    <string name="problem_source_1">oj.leetcode.com</string>
+    <string name="answer_source">Answers by rogers140, wyvern92</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="appreciate">The developer appreciate your help.</string>
+
+</resources>
