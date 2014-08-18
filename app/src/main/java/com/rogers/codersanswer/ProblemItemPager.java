@@ -32,7 +32,10 @@ public class ProblemItemPager extends Fragment {
     private int mPosition;
     private ShareActionProvider mShareActionProvider;
     private boolean mStarred;
-    private StarredFileHandler mStarredFileHandler = StarredFileHandler.getInstance(getActivity());;
+    private String mCurrentProblemName;
+    private Menu mMenu;
+    private StarredFileHandler mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
+    private Intent mShareIntent;
     public ProblemItemPager(){
 
     }
@@ -57,11 +60,39 @@ public class ProblemItemPager extends Fragment {
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(true,new ZoomOutPageTransformer());//define slide animation
         mPager.setCurrentItem(getCurrent());
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {});
-        setHasOptionsMenu(true);//call onCreateOptionMenu
+        setHasOptionsMenu(true);//call onCreateOptionsMenu
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {}
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {}
+
+            @Override
+            public void onPageSelected (int position) {
+                mShareIntent = new Intent(Intent.ACTION_SEND);
+                mShareIntent.setType("text/*");
+                mShareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+                mCurrentProblemName = mProblemList.get(position).mProblemName;
+                mShareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
+                        + mCurrentProblemName + getString(R.string.share_text2) + getString(R.string.app_link));
+                mShareActionProvider.setShareIntent(mShareIntent);
+                mStarred = mStarredFileHandler.isStarred(mCurrentProblemName);
+                MenuItem starItem = mMenu.findItem(R.id.problem_list_item_star);
+                if(mStarred) {
+                    starItem.setIcon(R.drawable.ic_action_important);
+                }
+                else {
+                    starItem.setIcon(R.drawable.ic_action_not_important);
+                }
+            }
+        });
+
+
         return view;
     }
-
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -69,7 +100,11 @@ public class ProblemItemPager extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new ProblemItemFragment(mProblemList.get(position).mProblemName);
+            ProblemItemFragment item = new ProblemItemFragment();
+            Bundle args = new Bundle();
+            args.putString("problemName",mProblemList.get(position).mProblemName);
+            item.setArguments(args);
+            return item;
         }
 
         @Override
@@ -86,9 +121,9 @@ public class ProblemItemPager extends Fragment {
         MenuItem item = menu.findItem(R.id.problem_list_item_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         //define share message
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+        mShareIntent.setType("text/*");
+        mShareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
         int problemIndex = 0;
         if(mPager == null) {
             problemIndex = mPosition;
@@ -96,25 +131,22 @@ public class ProblemItemPager extends Fragment {
         else {
             problemIndex = mPager.getCurrentItem();
         }
-        String problemName = mProblemList.get(problemIndex).mProblemName;
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
-                + problemName + getString(R.string.share_text2) + getString(R.string.app_link));
-
-        mShareActionProvider.setShareIntent(shareIntent);
-        mStarred = mStarredFileHandler.isStarred(mProblemList.get(problemIndex).mProblemName);
+        mCurrentProblemName = mProblemList.get(problemIndex).mProblemName;
+        mShareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
+                + mCurrentProblemName + getString(R.string.share_text2) + getString(R.string.app_link));
+        mShareActionProvider.setShareIntent(mShareIntent);
+        mStarred = mStarredFileHandler.isStarred(mCurrentProblemName);
         MenuItem starItem = menu.findItem(R.id.problem_list_item_star);
-
         if(mStarred) {
-
             starItem.setIcon(R.drawable.ic_action_important);
         }
         else {
             starItem.setIcon(R.drawable.ic_action_not_important);
         }
+        mMenu = menu;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if(item.getItemId() == R.id.problem_list_item_star) {
             if(mStarred) {
                 item.setIcon(R.drawable.ic_action_not_important);

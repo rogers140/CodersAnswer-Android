@@ -17,19 +17,19 @@ public class StarredItemFragment extends Fragment{
     private ExtendedWebView mExtendedWebView;
     private String mProblemName;
 
-    public StarredItemFragment(String problem_name) {
-        mProblemName = problem_name;
+    public StarredItemFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        mProblemName = getArguments().getString("problemName");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.starred_code_page, container, false);
-        setHasOptionsMenu(true);
         return view;
     }
     @Override

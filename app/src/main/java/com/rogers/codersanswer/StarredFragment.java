@@ -52,8 +52,8 @@ public class StarredFragment extends Fragment {
         ArrayList<String> problemNames = new ArrayList<String>();
         ArrayList<Integer> problemIcons = new ArrayList<Integer>();
         ArrayList<String> tags = new ArrayList<String>();
-        for(Problem p : mProblemList) {
-            for(String name : starredList) {
+        for(String name : starredList) { //should put starredlist out of problemList to keep the order
+            for(Problem p : mProblemList) {
                 if(name.equals(p.mProblemName)) {
                     problemNames.add(p.mProblemName);
                     problemIcons.add(p.mIconSource);

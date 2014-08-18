@@ -26,9 +26,9 @@ public class ProblemItemFragment extends Fragment {
 
     private ExtendedWebView mExtendedWebView;
     private String mProblemName;
+    //private StarredFileHandler mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
 
-    public ProblemItemFragment(String problem_name) {
-        mProblemName = problem_name;
+    public ProblemItemFragment() {
     }
 
     @Override
@@ -39,7 +39,8 @@ public class ProblemItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.code_page, container, false);
-        setHasOptionsMenu(true);
+        mProblemName = getArguments().getString("problemName");
+        //setHasOptionsMenu(true); //不需要这个
         return view;
     }
     @Override

@@ -24,12 +24,15 @@ import java.util.List;
  */
 public class StarredItemPager extends Fragment {
     private WebViewPager mPager;
-    private String[] mStarredProblemNames;
+    //private List<String> mStarredList;;
     private PagerAdapter mPagerAdapter;
     private int mPosition;
+    //private int mStarredSize;
     private ShareActionProvider mShareActionProvider;
     private boolean mStarred;
-    private StarredFileHandler mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
+    private StarredFileHandler mStarredFileHandler;
+    private Intent mShareIntent;
+    private MenuItem mStarItem;
 
     public StarredItemPager() {
 
@@ -42,10 +45,9 @@ public class StarredItemPager extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPosition = getArguments().getInt("problemIndex");
-        List<String> starredList = mStarredFileHandler.getStarredList();
-        mStarredProblemNames = new String[starredList.size()];
-        starredList.toArray(mStarredProblemNames);
-
+        mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
+        Log.i("call: ", "onCreate");
+        //mStarredList = mStarredFileHandler.getStarredList();//每次create的时候获取最新的star list
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +58,35 @@ public class StarredItemPager extends Fragment {
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(true,new ZoomOutPageTransformer());//define slide animation
         mPager.setCurrentItem(getCurrent());
-        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {});
+
+        mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {}
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {}
+
+            @Override
+            public void onPageSelected (int position) {
+                mShareIntent = new Intent(Intent.ACTION_SEND);
+                mShareIntent.setType("text/*");
+                mShareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+                String problemName = mStarredFileHandler.getStarredList().get(position);
+                mShareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
+                        + problemName + getString(R.string.share_text2) + getString(R.string.app_link));
+                mShareActionProvider.setShareIntent(mShareIntent);
+                mStarred = mStarredFileHandler.isStarred(problemName);
+                if(mStarred) {
+                    mStarItem.setIcon(R.drawable.ic_action_important);
+                }
+                else {
+                    mStarItem.setIcon(R.drawable.ic_action_not_important);
+                }
+            }
+        });
+        mPager.setOffscreenPageLimit(0);//缓存问题
         setHasOptionsMenu(true);//call onCreateOptionMenu
         return view;
     }
@@ -68,12 +98,17 @@ public class StarredItemPager extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new StarredItemFragment(mStarredProblemNames[position]);
+            StarredItemFragment item = new StarredItemFragment();
+            Bundle args = new Bundle();
+            args.putString("problemName", mStarredFileHandler.getStarredList().get(position));
+            Log.i("call: ", mStarredFileHandler.getStarredList().get(position));
+            item.setArguments(args);
+            return item;
         }
 
         @Override
         public int getCount() {
-            return mStarredProblemNames.length;
+            return mStarredFileHandler.getStarredList().size();
         }
     }
 
@@ -85,9 +120,9 @@ public class StarredItemPager extends Fragment {
         MenuItem item = menu.findItem(R.id.starred_list_item_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         //define share message
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        mShareIntent = new Intent(Intent.ACTION_SEND);
+        mShareIntent.setType("text/*");
+        mShareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
         int problemIndex = 0;
         if(mPager == null) {
             problemIndex = mPosition;
@@ -95,21 +130,21 @@ public class StarredItemPager extends Fragment {
         else {
             problemIndex = mPager.getCurrentItem();
         }
-        String problemName = mStarredProblemNames[problemIndex];
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
+        String problemName = mStarredFileHandler.getStarredList().get(problemIndex);
+        mShareIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.share_text1)
                 + problemName + getString(R.string.share_text2) + getString(R.string.app_link));
 
-        mShareActionProvider.setShareIntent(shareIntent);
+        mShareActionProvider.setShareIntent(mShareIntent);
         if(mStarredFileHandler == null) {
             mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
         }
-        mStarred = mStarredFileHandler.isStarred(mStarredProblemNames[problemIndex]);
-        MenuItem starItem = menu.findItem(R.id.starred_list_item_star);
+        mStarred = mStarredFileHandler.isStarred(problemName);
+        mStarItem = menu.findItem(R.id.starred_list_item_star);
         if(mStarred) {
-            starItem.setIcon(R.drawable.ic_action_important);
+            mStarItem.setIcon(R.drawable.ic_action_important);
         }
         else {
-            starItem.setIcon(R.drawable.ic_action_not_important);
+            mStarItem.setIcon(R.drawable.ic_action_not_important);
         }
     }
     @Override
@@ -119,12 +154,15 @@ public class StarredItemPager extends Fragment {
             if(mStarred) {
                 item.setIcon(R.drawable.ic_action_not_important);
                 mStarred = false;
-                mStarredFileHandler.deleteFromStarred(mStarredProblemNames[mPager.getCurrentItem()]);
+                String problemToRemove = mStarredFileHandler.getStarredList().get(mPager.getCurrentItem());
+                mStarredFileHandler.deleteFromStarred(problemToRemove);
+                mPagerAdapter.notifyDataSetChanged();
             }
             else {
                 item.setIcon(R.drawable.ic_action_important);
                 mStarred = true;
-                mStarredFileHandler.addToStarred(mStarredProblemNames[mPager.getCurrentItem()]);
+                mStarredFileHandler.addToStarred(mStarredFileHandler.getStarredList().get(mPager.getCurrentItem()));
+                mPagerAdapter.notifyDataSetChanged();
             }
             return true;
         }
