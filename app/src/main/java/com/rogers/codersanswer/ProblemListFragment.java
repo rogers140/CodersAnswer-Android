@@ -45,15 +45,8 @@ public class ProblemListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mListView = (ListView)view.findViewById(R.id.problem_list_view);
         mListView.setTextFilterEnabled(true);
-        ArrayList<String> problemNames = new ArrayList<String>();
-        ArrayList<Integer> problemIcons = new ArrayList<Integer>();
-        ArrayList<String> tags = new ArrayList<String>();
-        for(Problem p : mProblemList) {
-            problemNames.add(p.mProblemName);
-            problemIcons.add(p.mIconSource);
-            tags.add(p.mTags);
-        }
-        mArrayAdapter = new ProblemListAdapter(getActivity().getApplicationContext(), R.layout.problem_list_item, problemNames, problemIcons, tags);
+
+        mArrayAdapter = new ProblemListAdapter(getActivity().getApplicationContext(), R.layout.problem_list_item, mProblemList);
         mListView.setAdapter(mArrayAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,12 +54,13 @@ public class ProblemListFragment extends Fragment {
                                     int position, long id) {
                 ProblemItemPager item = new ProblemItemPager();
                 Bundle args = new Bundle();
-                args.putInt("problemIndex", position);
+                Problem p = mArrayAdapter.getItem(position);
+                String problemName = p.mProblemName;
+                args.putString("problemName", problemName);
                 item.setArguments(args);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, item);
                 transaction.commit();
-
             }
         });
     }

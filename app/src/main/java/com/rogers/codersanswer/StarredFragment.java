@@ -28,8 +28,9 @@ import java.util.List;
 public class StarredFragment extends Fragment {
     private ArrayList<Problem> mProblemList;
     private List<String> starredList;
+    private ArrayList<Problem> mStarredProblem;
     private ListView mListView;
-    private ArrayAdapter<String> mArrayAdapter;
+    private ProblemListAdapter mArrayAdapter;
     private StarredFileHandler mStarredFileHandler;
 
     @Override
@@ -38,6 +39,7 @@ public class StarredFragment extends Fragment {
         mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
         starredList = mStarredFileHandler.getStarredList();
         mProblemList = ((MainActivity)getActivity()).getProblemList();
+        mStarredProblem = new ArrayList<Problem>();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,21 +51,16 @@ public class StarredFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mListView = (ListView)view.findViewById(R.id.starred_list_view);
         mListView.setTextFilterEnabled(true);
-        ArrayList<String> problemNames = new ArrayList<String>();
-        ArrayList<Integer> problemIcons = new ArrayList<Integer>();
-        ArrayList<String> tags = new ArrayList<String>();
         for(String name : starredList) { //should put starredlist out of problemList to keep the order
             for(Problem p : mProblemList) {
                 if(name.equals(p.mProblemName)) {
-                    problemNames.add(p.mProblemName);
-                    problemIcons.add(p.mIconSource);
-                    tags.add(p.mTags);
+                    mStarredProblem.add(p);
                     break;
                 }
             }
         }
 
-        mArrayAdapter = new ProblemListAdapter(getActivity().getApplicationContext(), R.layout.problem_list_item, problemNames,problemIcons,tags);
+        mArrayAdapter = new ProblemListAdapter(getActivity().getApplicationContext(), R.layout.problem_list_item, mStarredProblem);
         mListView.setAdapter(mArrayAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,7 +68,8 @@ public class StarredFragment extends Fragment {
                                     int position, long id) {
                 StarredItemPager item = new StarredItemPager();
                 Bundle args = new Bundle();
-                args.putInt("problemIndex", position);
+                String problemName = mArrayAdapter.getItem(position).mProblemName;
+                args.putString("problemName", problemName);
                 item.setArguments(args);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.container, item);

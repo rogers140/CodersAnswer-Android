@@ -36,6 +36,7 @@ public class ProblemItemPager extends Fragment {
     private Menu mMenu;
     private StarredFileHandler mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
     private Intent mShareIntent;
+
     public ProblemItemPager(){
 
     }
@@ -48,7 +49,12 @@ public class ProblemItemPager extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProblemList = ((MainActivity)getActivity()).getProblemList();
-        mPosition = getArguments().getInt("problemIndex");
+        String problemName = getArguments().getString("problemName");
+        for(int i = 0; i < mProblemList.size(); ++i) {
+            if(mProblemList.get(i).mProblemName.equals(problemName)) {
+                mPosition = i;
+            }
+        }
         mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
     }
     @Override

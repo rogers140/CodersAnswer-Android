@@ -25,10 +25,8 @@ import java.util.List;
  */
 public class StarredItemPager extends Fragment {
     private WebViewPager mPager;
-    //private List<String> mStarredList;
     private PagerAdapter mPagerAdapter;
     private int mPosition;
-    //private int mStarredSize;
     private ShareActionProvider mShareActionProvider;
     private boolean mStarred;
     private StarredFileHandler mStarredFileHandler;
@@ -45,10 +43,13 @@ public class StarredItemPager extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosition = getArguments().getInt("problemIndex");
         mStarredFileHandler = StarredFileHandler.getInstance(getActivity());
-        Log.i("call: ", "onCreate");
-        //mStarredList = mStarredFileHandler.getStarredList();//每次create的时候获取最新的star list
+        String problemName = getArguments().getString("problemName");
+        for(int i = 0; i < mStarredFileHandler.getStarredList().size(); ++i) {
+            if(mStarredFileHandler.getStarredList().get(i).equals(problemName)) {
+                mPosition = i;
+            }
+        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
