@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
@@ -52,6 +53,10 @@ public class ProblemListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                //fold virtual keyboard
+                InputMethodManager im = (InputMethodManager)getActivity().getSystemService(getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
                 ProblemItemPager item = new ProblemItemPager();
                 Bundle args = new Bundle();
                 Problem p = mArrayAdapter.getItem(position);

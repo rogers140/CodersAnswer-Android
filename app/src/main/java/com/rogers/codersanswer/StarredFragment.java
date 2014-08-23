@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -66,6 +67,10 @@ public class StarredFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                //fold virtual keyboard
+                InputMethodManager im = (InputMethodManager)getActivity().getSystemService(getActivity().getApplicationContext().INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
                 StarredItemPager item = new StarredItemPager();
                 Bundle args = new Bundle();
                 String problemName = mArrayAdapter.getItem(position).mProblemName;
